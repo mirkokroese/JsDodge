@@ -1,6 +1,7 @@
 'use strict';
 var Game = function () {
     this.fps = 60;
+    this.moveSpeed = 3;
     this.running = false;
     this._intervalId = null;
     this.canvas = document.getElementById('c');
@@ -29,10 +30,22 @@ Game.prototype.update = function() {
         that.keyUp(e);
     }, false);
 
-    console.log(this.controller.leftPressed());
     if(this.controller.leftPressed()) {
-        this.player.moveLeft(3);
+        this.player.moveLeft(this.moveSpeed);
     }
+
+    if(this.controller.rightPressed()) {
+        this.player.moveRight(this.moveSpeed);
+    }
+
+    if(this.controller.upPressed()) {
+        this.player.moveUp(this.moveSpeed);
+    }
+
+    if(this.controller.downPressed()) {
+        this.player.moveDown(this.moveSpeed);
+    }
+
     this.draw();
 };
 
