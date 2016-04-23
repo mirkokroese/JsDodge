@@ -1,5 +1,6 @@
 'use strict';
 var Player = function (gameObject) {
+    this.health = 100;
     this.width = 100;
     this.height = 100;
     this.x = (document.body.clientWidth / 2) - this.width;
@@ -55,4 +56,22 @@ Player.prototype.moveDown = function (speed) {
     if (! this.game.collide('y', 'down', speed, this)) {
         this.y += speed;
     }
+};
+
+Player.prototype.hitsEnemy = function (enemy) {
+    var x = enemy.getX() - this.getX();
+    var y = enemy.getY() - this.getY();
+
+    if(x < 100 && x > -100 && y < 100 && y > -100) {
+        return true;
+    }
+
+    return false;
+}
+
+Player.prototype.died = function () {
+    if (this.health <= 0) {
+        return true;
+    }
+    return false;
 };

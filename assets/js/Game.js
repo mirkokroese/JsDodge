@@ -1,10 +1,11 @@
 'use strict';
 var Game = function () {
     this.fps = 60;
-    this.moveSpeed = 4.3;
-    this.enemySpawnTime = 30;
+    this.moveSpeed = 6.3;
+    this.enemySpawnTime = 5;
     this.running = false;
     this._intervalId = null;
+    this._roundTimer = null;
     this._roundTimer = null;
     this.canvas = document.getElementById('c');
     this.ctx = this.canvas.getContext('2d');
@@ -22,12 +23,36 @@ Game.prototype.draw = function() {
         for (var i = 0; i < this.enemies.length; i++) {
             this.ctx.drawImage(this.enemies[i].image, this.enemies[i].getX(), this.enemies[i].getY());
         }
+        // Health background
+        this.ctx.fillStyle = "#c0392b";
+        this.ctx.fillRect(30,30,300,30);
+        // Health bar
+        this.ctx.fillStyle = "#2ecc71";
+        this.ctx.fillRect(30,30,(300 / 100) * this.player.health,30);
+        // Health text
+        this.ctx.fillStyle = "#EFEFEF";
+        this.ctx.font = "30px Arial";
+        this.ctx.fillText("HEALTH", 350, 55.5);
     }
 };
 
 
 Game.prototype.update = function() {
 
+    // Check if player hits an enemy
+    for (var i = 0; i < this.enemies.length; i++) {
+        if(this.player.hitsEnemy(this.enemies[i])) {
+            this.player.health -= 0.5;
+        }
+    }
+
+    // Check if player died
+    if(this.player.died()) {
+        this.stop();
+        alert('GAME OVER BITCH!');
+    }
+
+    // Keyboard input
     var that = this.controller;
 
     document.addEventListener("keydown", function (e) {
@@ -53,8 +78,14 @@ Game.prototype.update = function() {
         this.player.moveDown(this.moveSpeed);
     }
 
+    if(this.controller.boostPressed()) {
+        this.moveSpeed = 8;
+    } else {
+        this.moveSpeed = 4.3;
+    }
+
     for (var x = 0; x < this.enemies.length; x++) {
-        this.enemies[x].move(5);
+        this.enemies[x].move(this.enemies[x].speed);
     }
 
     this.draw();
@@ -69,6 +100,8 @@ Game.prototype.start = function () {
     this._interValId =  setInterval(function () {
         that.run();
     }, 1000 / this.fps);
+
+    // Add enemies
     if(this.enemies.length == 0) {
         that.addEnemy();
     }
@@ -107,7 +140,7 @@ Game.prototype.collide = function(axes, direction, speed, object) {
             }
         }
         if(direction == 'right') {
-            if(! (object.getX() + speed >= this.canvas.getWidth() - object.getWidth())) {
+            if(! (object.getX() + speed >= this.canvas.getWidth() - (object.getWidth() + 30) )) {
                 return false;
             } else {
                 return true;
@@ -123,7 +156,7 @@ Game.prototype.collide = function(axes, direction, speed, object) {
             }
         }
         if(direction == 'down') {
-            if(! (object.getY() + speed >= this.canvas.getHeight() - object.getHeight())) {
+            if(! (object.getY() + speed >= this.canvas.getHeight() - (object.getHeight() + 30) )) {
                 return false;
             } else {
                 return true;

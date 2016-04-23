@@ -6,26 +6,48 @@ var Enemy = function (gameObject, startX, startY, direction) {
     this.y = startY;
     this.game = gameObject;
     this.direction = direction;
+    this.speed = 4;
     this.image = document.createElement('img');
     this.image.src = 'assets/img/enemy.png';
 };
 
 Enemy.prototype.move = function (speed) {
-    console.log(this.direction);
     switch (this.direction) {
+        // Bottom right
         case 1:
-            this.setX(this.getX()+10);
+            if ((! this.game.collide('x', 'right', speed, this)) && (! this.game.collide('y', 'down', speed, this))) {
+                this.setX(this.getX() + speed);
+                this.setY(this.getY() + speed);
+                return;
+            }
             break;
+        // Bottom left
         case 2:
-            this.setX(this.getX()-10);
+            if ((! this.game.collide('x', 'left', speed, this)) && (! this.game.collide('y', 'down', speed, this))) {
+                this.setX(this.getX() - speed);
+                this.setY(this.getY() + speed);
+                return;
+            }
             break;
+        // Upper right
         case 3:
-            this.setY(this.getY()+10);
+            if ((! this.game.collide('y', 'up', speed, this)) && (! this.game.collide('x', 'right', speed, this))) {
+                this.setY(this.getY() - speed);
+                this.setX(this.getX() + speed);
+                return;
+            }
             break;
+        // Upper left
         case 4:
-            this.setY(this.getY()-10);
+            if((! this.game.collide('y', 'up', speed, this)) && (! this.game.collide('x', 'left', speed, this))) {
+                this.setY(this.getY() - speed);
+                this.setX(this.getX() - speed);
+                return;
+            }
             break;
     }
+
+    this.direction = (Math.floor(Math.random() * 4 + 1));
 };
 
 Enemy.prototype.getWidth = function () {
@@ -51,7 +73,3 @@ Enemy.prototype.getY = function () {
 Enemy.prototype.setY = function (val) {
     this.y = val;
 };
-
-Enemy.prototype.move = function (val) {
-
-}
