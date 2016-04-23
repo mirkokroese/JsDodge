@@ -5,6 +5,8 @@ var Player = function (gameObject) {
     this.x = (document.body.clientWidth / 2) - this.width;
     this.y = (document.body.clientHeight / 2) - this.height;
     this.game = gameObject;
+    this.image = document.createElement("img");
+    this.image.src = '/assets/img/player.png';
 };
 
 Player.prototype.getWidth = function () {

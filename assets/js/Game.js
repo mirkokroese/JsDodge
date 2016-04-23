@@ -15,7 +15,7 @@ Game.prototype.draw = function() {
     if (this.canvas.get().getContext) {
 
         this.ctx.clearRect(0,0,this.canvas.getWidth(),this.canvas.getHeight());
-        this.ctx.fillRect(this.player.getX(),this.player.getY(),this.player.getWidth(),this.player.getHeight());
+        this.ctx.drawImage(this.player.image, this.player.getX(), this.player.getY());
     }
 };
 
