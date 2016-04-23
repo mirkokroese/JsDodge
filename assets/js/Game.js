@@ -13,6 +13,7 @@ var Game = function () {
     this.enemies = [];
     this.canvas = new Canvas();
     this.controller = new Controller();
+    this.level = 0;
 };
 
 Game.prototype.draw = function() {
@@ -33,6 +34,8 @@ Game.prototype.draw = function() {
         this.ctx.fillStyle = "#EFEFEF";
         this.ctx.font = "30px Arial";
         this.ctx.fillText("HEALTH", 350, 55.5);
+        // Level text
+        this.ctx.fillText("LEVEL: " + this.level, this.canvas.getWidth() - 160, 55.5);
     }
 };
 
@@ -49,7 +52,7 @@ Game.prototype.update = function() {
     // Check if player died
     if(this.player.died()) {
         this.stop();
-        alert('GAME OVER BITCH!');
+        alert('GAME OVER BITCH!, je behaalde level is: ' + this.level);
     }
 
     // Keyboard input
@@ -114,6 +117,7 @@ Game.prototype.addEnemy = function () {
     var enemyX = Math.floor((Math.random() * (this.canvas.getWidth() - 150)) + 0);
     var enemyY = Math.floor((Math.random() * (this.canvas.getHeight() - 150)) + 0);
 
+    this.level++;
     this.enemies.push(new Enemy(this, enemyX, enemyY, (Math.floor(Math.random() * 4 + 1))));
 };
 
