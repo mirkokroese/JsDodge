@@ -1,7 +1,7 @@
 'use strict';
 var Game = function () {
     this.fps = 60;
-    this.moveSpeed = 3;
+    this.moveSpeed = 4.3;
     this.running = false;
     this._intervalId = null;
     this.canvas = document.getElementById('c');
