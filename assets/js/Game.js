@@ -22,11 +22,11 @@ Game.prototype.draw = function() {
 Game.prototype.update = function() {
 
     var that = this.controller;
-    document.addEventListener("keydown", function () {
-        that.keyDown();
+    document.addEventListener("keydown", function (e) {
+        that.keyDown(e);
     }, false);
-    document.addEventListener("keyup", function () {
-        that.keyUp();
+    document.addEventListener("keyup", function (e) {
+        that.keyUp(e);
     }, false);
 
     console.log(this.controller.leftPressed());
