@@ -32,25 +32,25 @@ Player.prototype.setY = function (val) {
 };
 
 Player.prototype.moveLeft = function (speed) {
-    if(! this.game.collide('x', speed, this)) {
+    if(! this.game.collide('x', 'left', speed, this)) {
         this.setX(this.getX() - speed);
     }
 };
 
 Player.prototype.moveRight = function (speed) {
-    if (! this.game.collide('x', speed, this)) {
+    if (! this.game.collide('x', 'right', speed, this)) {
         this.x += speed;
     }
 };
 
 Player.prototype.moveUp = function (speed) {
-    if (! this.game.collide('y', speed, this)) {
+    if (! this.game.collide('y', 'up', speed, this)) {
         this.y -= speed;
     }
 };
 
 Player.prototype.moveDown = function (speed) {
-    if (! this.game.collide('y', speed, this)) {
+    if (! this.game.collide('y', 'down', speed, this)) {
         this.y += speed;
     }
 };

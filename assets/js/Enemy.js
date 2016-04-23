@@ -1,4 +1,5 @@
 'use strict';
+var Enemy = function (gameObject) {
     this.width = 100;
     this.height = 100;
     this.x = (document.body.clientWidth / 2) - this.width;

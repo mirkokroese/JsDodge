@@ -73,19 +73,37 @@ Game.prototype.run = function () {
     }
 };
 
-Game.prototype.collide = function(axes, speed, object) {
+Game.prototype.collide = function(axes, direction, speed, object) {
     if (axes == 'x') {
-        if(! (object.getX() - speed <= 0 ) && ! (object.getX() + speed >= this.canvas.getWidth() - object.getWidth())) { // || (! (object.getX() - speed) <= 0)
-            return false;
-        } else {
-            return true;
+        if(direction == 'left') {
+            if(! (object.getX() - speed <= 0 )) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        if(direction == 'right') {
+            if(! (object.getX() + speed >= this.canvas.getWidth() - object.getWidth())) {
+                return false;
+            } else {
+                return true;
+            }
         }
     }
     if (axes == 'y') {
-        if(! (object.getY() - speed <= 0 ) && ! (object.getY() + speed >= this.canvas.getHeight() - object.getHeight())) {
-            return false;
-        } else {
-            return true;
+        if(direction == 'up') {
+            if(! (object.getY() - speed <= 0 )) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        if(direction == 'down') {
+            if(! (object.getY() + speed >= this.canvas.getHeight() - object.getHeight())) {
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 };
