@@ -1,8 +1,38 @@
 'use strict';
-var Enemy = function (gameObject) {
+var Enemy = function (gameObject, startX, startY) {
     this.width = 100;
     this.height = 100;
-    this.x = (document.body.clientWidth / 2) - this.width;
-    this.y = (document.body.clientHeight / 2) - this.height;
+    this.x = startX;
+    this.y = startY;
     this.game = gameObject;
+    this.image = document.createElement('img');
+    this.image.src = 'assets/img/enemy.png';
 };
+
+Enemy.prototype.getWidth = function () {
+    return this.width;
+};
+
+Enemy.prototype.getHeight = function () {
+    return this.height;
+};
+
+Enemy.prototype.getX = function () {
+    return this.x;
+};
+
+Enemy.prototype.setX = function (val) {
+    this.x = val;
+};
+
+Enemy.prototype.getY = function () {
+    return this.y;
+};
+
+Enemy.prototype.setY = function (val) {
+    this.y = val;
+};
+
+Enemy.prototype.move = function (val) {
+
+}

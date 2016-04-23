@@ -4,9 +4,11 @@ var Game = function () {
     this.moveSpeed = 4.3;
     this.running = false;
     this._intervalId = null;
+    this._roundTimer = null;
     this.canvas = document.getElementById('c');
     this.ctx = this.canvas.getContext('2d');
     this.player = new Player(this);
+    this.enemies = [];
     this.canvas = new Canvas();
     this.controller = new Controller();
 };
@@ -16,6 +18,9 @@ Game.prototype.draw = function() {
 
         this.ctx.clearRect(0,0,this.canvas.getWidth(),this.canvas.getHeight());
         this.ctx.drawImage(this.player.image, this.player.getX(), this.player.getY());
+        for (var i = 0; i < this.enemies.length; i++) {
+            this.ctx.drawImage(this.enemies[i].image, this.enemies[i].getX(), this.enemies[i].getY());
+        }
     }
 };
 
@@ -23,6 +28,7 @@ Game.prototype.draw = function() {
 Game.prototype.update = function() {
 
     var that = this.controller;
+
     document.addEventListener("keydown", function (e) {
         that.keyDown(e);
     }, false);
@@ -58,6 +64,19 @@ Game.prototype.start = function () {
     this._interValId =  setInterval(function () {
         that.run();
     }, 1000 / this.fps);
+    if(this.enemies.length == 0) {
+        that.addEnemy();
+    }
+    this._roundTimer = setInterval(function () {
+        that.addEnemy();
+    }, 1000 * 5)
+};
+
+Game.prototype.addEnemy = function () {
+    var enemyX = Math.floor((Math.random() * this.canvas.getWidth()) + 0);
+    var enemyY = Math.floor((Math.random() * this.canvas.getHeight()) + 0);
+
+    this.enemies.push(new Enemy(this, enemyX, enemyY));
 };
 
 Game.prototype.stop = function () {
@@ -79,6 +98,7 @@ Game.prototype.collide = function(axes, direction, speed, object) {
             if(! (object.getX() - speed <= 0 )) {
                 return false;
             } else {
+                this.running = false;
                 return true;
             }
         }
