@@ -2,6 +2,7 @@
 var Game = function () {
     this.fps = 60;
     this.moveSpeed = 4.3;
+    this.enemySpawnTime = 30;
     this.running = false;
     this._intervalId = null;
     this._roundTimer = null;
@@ -52,6 +53,10 @@ Game.prototype.update = function() {
         this.player.moveDown(this.moveSpeed);
     }
 
+    for (var x = 0; x < this.enemies.length; x++) {
+        this.enemies[x].move(5);
+    }
+
     this.draw();
 };
 
@@ -69,19 +74,14 @@ Game.prototype.start = function () {
     }
     this._roundTimer = setInterval(function () {
         that.addEnemy();
-    }, 1000 * 5)
+    }, 1000 * this.enemySpawnTime)
 };
 
 Game.prototype.addEnemy = function () {
-    var enemyX = Math.floor((Math.random() * this.canvas.getWidth()) + 0);
-    var enemyY = Math.floor((Math.random() * this.canvas.getHeight()) + 0);
+    var enemyX = Math.floor((Math.random() * (this.canvas.getWidth() - 150)) + 0);
+    var enemyY = Math.floor((Math.random() * (this.canvas.getHeight() - 150)) + 0);
 
-    this.enemies.push(new Enemy(this, enemyX, enemyY));
-};
-
-Game.prototype.stop = function () {
-    this.running = false;
-    clearInterval(this._interValId);
+    this.enemies.push(new Enemy(this, enemyX, enemyY, (Math.floor(Math.random() * 4 + 1))));
 };
 
 Game.prototype.run = function () {
@@ -92,13 +92,17 @@ Game.prototype.run = function () {
     }
 };
 
+Game.prototype.stop = function () {
+    this.running = false;
+    clearInterval(this._interValId);
+};
+
 Game.prototype.collide = function(axes, direction, speed, object) {
     if (axes == 'x') {
         if(direction == 'left') {
             if(! (object.getX() - speed <= 0 )) {
                 return false;
             } else {
-                this.running = false;
                 return true;
             }
         }

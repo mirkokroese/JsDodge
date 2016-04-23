@@ -14,30 +14,22 @@
     <script type="text/javascript" src="assets/js/Enemy.js"></script>
     <script type="text/javascript">
     $(document).ready( function() {
-
         canvas = new Canvas();
         canvas.set();
-
-        function start() {
-            var game = new Game();
-            game.start();
-            window.onresize = function (event) {
-                canvas = new Canvas();
-                canvas.set();
-                game.draw();
-            };
-        }
-        $('#start_game').click(function () {
-            $('.menu').hide();
-            start();
-        });
+        var game = new Game();
+        game.start();
+        window.onresize = function (event) {
+            canvas = new Canvas();
+            canvas.set();
+            game.draw();
+        };
     });
     </script>
 </head>
 <body>
     <canvas id="c" height="10"></canvas>
-    <div class="menu">
-        <button id="start_game">Start Game</button>
-    </div>
+<!--    <div class="menu">-->
+<!--        <button id="start_game">Start Game</button>-->
+<!--    </div>-->
 </body>
 </html>

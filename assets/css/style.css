@@ -12,7 +12,8 @@ body {
 }
 
 canvas#c {
-    background-image: url('../img/background.png');
+    background-image: url('../img/background.jpg');
+    background-size: cover;
     z-index:0;
 }
 
