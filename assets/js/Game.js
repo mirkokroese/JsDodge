@@ -193,7 +193,7 @@ Game.prototype.checkState = function () {
 
 Game.prototype.gameOver = function () {
     $('#game_over').show();
-    $('#btn_main_menu');
+    $('#btn_main_menu').show();
 
     var that = this;
     $('#btn_main_menu').click( function () {
