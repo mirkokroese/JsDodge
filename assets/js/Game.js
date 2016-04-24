@@ -14,6 +14,7 @@ var Game = function () {
     this.canvas = new Canvas();
     this.controller = new Controller();
     this.level = 0;
+    this.bgSound = null;;
 };
 
 Game.prototype.draw = function() {
@@ -47,6 +48,8 @@ Game.prototype.draw = function() {
 
 Game.prototype.update = function() {
 
+    this.bgSound.play();
+
     // Check if player hits an enemy
     for (var i = 0; i < this.enemies.length; i++) {
         if(this.player.hitsEnemy(this.enemies[i])) {
@@ -57,6 +60,8 @@ Game.prototype.update = function() {
     // Check if player died
     if(this.player.died()) {
         this.stop();
+        this.bgSound.pause();
+        this.bgSound.currentTime = 0;
         alert('GAME OVER BITCH!, je behaalde level is: ' + this.level);
     }
 
@@ -114,6 +119,8 @@ Game.prototype.start = function () {
     this.running = true;
 
     this.canvas.set();
+    this.bgSound = new Audio();
+    this.bgSound.src = 'assets/sounds/background.wav';
 
     var that = this;
     this._interValId =  setInterval(function () {
