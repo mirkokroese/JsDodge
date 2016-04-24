@@ -160,11 +160,11 @@ Game.prototype.init = function () {
     var btnStartGame = $('#start_game');
     btnStartGame.show();
 
-    this.gameState = 1;
     var that = this;
     if(! this.booted) {
         btnStartGame.click( function () {
             btnStartGame.hide();
+            that.gameState = 1;
             that.start();
         });
         this.booted = true;
@@ -192,13 +192,13 @@ Game.prototype.checkState = function () {
 };
 
 Game.prototype.gameOver = function () {
+    $('#game_over #game_over_text small span').text(this.level);
     $('#game_over').show();
-    $('#btn_main_menu').show();
 
     var that = this;
     $('#btn_main_menu').click( function () {
         that.gameState = 0;
-        $(this).hide();
+        $('#game_over').hide();
         that.checkState();
     });
 };
