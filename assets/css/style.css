@@ -14,25 +14,43 @@ body {
 canvas#c {
     background-image: url('../img/background.jpg');
     background-size: cover;
-    z-index:0;
+    z-index: 0;
 }
 
-.menu {
+#menu {
+    position: relative;
+}
+
+#start_game {
     position: absolute;
-    top: 0;
-    left:0;
-    right:0;
-    bottom:0;
-    width: 300px;
-    margin: 500px auto 0 auto;
-    z-index:9999;
-}
+    left: 50%;
+    top: 50%;
 
-.menu #start_game {
-    border:none;
-    background-color: #27ae60;
-    color: #efefef;
+    transform: translate(-50%, -50%);
+    z-index:1;
+    padding:20px 50px;
+    color: #EFEFEF;
     font-weight: bold;
     font-size: 20px;
-    padding: 30px;
+    background-color: #2980b9;
+    border:none;
 }
+
+#start_game:focus {
+    outline: none;
+}
+#start_game:active {
+    background-color: #3498db;
+}
+#start_game::selection {
+    background-color: inherit;
+}
+
+/*#start_game {*/
+    /*border:none;*/
+    /*background-color: #27ae60;*/
+    /*color: #efefef;*/
+    /*font-weight: bold;*/
+    /*font-size: 20px;*/
+    /*padding: 30px;*/
+/*}*/
