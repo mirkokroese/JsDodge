@@ -1,54 +1,54 @@
 'use strict';
 var Game = function () {
+    this.booted = false;
     this.fps = 60;
     this.moveSpeed = 6.3;
     this.enemySpawnTime = 5;
-    this.running = false;
-    this._intervalId = null;
-    this._roundTimer = null;
+    this._interValId = null;
     this._roundTimer = null;
     this.canvas = document.getElementById('c');
     this.ctx = this.canvas.getContext('2d');
-    this.player = new Player(this);
-    this.enemies = [];
     this.canvas = new Canvas();
-    this.controller = new Controller();
-    this.level = 0;
-    this.bgSound = null;;
 };
 
 Game.prototype.draw = function() {
     if (this.canvas.get().getContext) {
-
+        // Clearing the canvas
         this.ctx.clearRect(0,0,this.canvas.getWidth(),this.canvas.getHeight());
-        this.ctx.drawImage(this.player.image, this.player.getX(), this.player.getY());
-        for (var i = 0; i < this.enemies.length; i++) {
-            this.ctx.drawImage(this.enemies[i].image, this.enemies[i].getX(), this.enemies[i].getY());
+
+        // Playing
+        if(this.gameState == 1) {
+            // Drawing the player
+            this.ctx.drawImage(this.player.image, this.player.getX(), this.player.getY());
+            // Drawing the enemies
+            for (var i = 0; i < this.enemies.length; i++) {
+                this.ctx.drawImage(this.enemies[i].image, this.enemies[i].getX(), this.enemies[i].getY());
+            }
+            // Health background
+            this.ctx.fillStyle = "#c0392b";
+            this.ctx.fillRect(30,30,300,30);
+            // Health bar
+            this.ctx.fillStyle = "#2ecc71";
+            this.ctx.fillRect(30,30,(300 / 100) * this.player.health,30);
+            // Health text
+            this.ctx.fillStyle = "#EFEFEF";
+            this.ctx.font = "30px Arial";
+            this.ctx.fillText("HEALTH", 350, 55.5);
+            // Level text
+            this.ctx.fillText("LEVEL: " + this.level, this.canvas.getWidth() - 160, 55.5);
+            // Boost background
+            this.ctx.fillStyle = "#34495e";
+            this.ctx.fillRect(30,70,300,20);
+            this.ctx.fillStyle = "#2980b9";
+            this.ctx.fillRect(30,70,(300 / 100) * this.player.boost,20);
         }
-        // Health background
-        this.ctx.fillStyle = "#c0392b";
-        this.ctx.fillRect(30,30,300,30);
-        // Health bar
-        this.ctx.fillStyle = "#2ecc71";
-        this.ctx.fillRect(30,30,(300 / 100) * this.player.health,30);
-        // Health text
-        this.ctx.fillStyle = "#EFEFEF";
-        this.ctx.font = "30px Arial";
-        this.ctx.fillText("HEALTH", 350, 55.5);
-        // Level text
-        this.ctx.fillText("LEVEL: " + this.level, this.canvas.getWidth() - 160, 55.5);
-        // Boost background
-        this.ctx.fillStyle = "#34495e";
-        this.ctx.fillRect(30,70,300,20);
-        this.ctx.fillStyle = "#2980b9";
-        this.ctx.fillRect(30,70,(300 / 100) * this.player.boost,20)
     }
 };
 
 
 Game.prototype.update = function() {
 
-    this.bgSound.play();
+    //this.bgSound.play();
 
     // Check if player hits an enemy
     for (var i = 0; i < this.enemies.length; i++) {
@@ -59,10 +59,8 @@ Game.prototype.update = function() {
 
     // Check if player died
     if(this.player.died()) {
+        this.gameState = 2;
         this.stop();
-        this.bgSound.pause();
-        this.bgSound.currentTime = 0;
-        alert('GAME OVER BITCH!, je behaalde level is: ' + this.level);
     }
 
     // Keyboard input
@@ -116,15 +114,14 @@ Game.prototype.update = function() {
 };
 
 Game.prototype.start = function () {
-    this.running = true;
-
     this.canvas.set();
     this.bgSound = new Audio();
     this.bgSound.src = 'assets/sounds/background.wav';
 
     var that = this;
     this._interValId =  setInterval(function () {
-        that.run();
+        that.update();
+        console.log('wat jong');
     }, 1000 / this.fps);
 
     // Add enemies
@@ -144,17 +141,66 @@ Game.prototype.addEnemy = function () {
     this.enemies.push(new Enemy(this, enemyX, enemyY, (Math.floor(Math.random() * 4 + 1))));
 };
 
-Game.prototype.run = function () {
-    if (this.running) {
-        this.update();
-    } else {
-        this.stop();
+Game.prototype.initInternals = function () {
+    this.player = new Player(this);
+    this.enemies = [];
+    this.controller = new Controller();
+    this.level = 0;
+    this.bgSound = null;
+    this.gameState = 0;
+    this.moveSpeed = 4.3;
+    this.enemySpawnTime = 5;
+};
+
+Game.prototype.init = function () {
+    this.draw();
+    this.canvas.set();
+    this.initInternals();
+
+    var btnStartGame = $('#start_game');
+    btnStartGame.show();
+
+    this.gameState = 1;
+    var that = this;
+    if(! this.booted) {
+        btnStartGame.click( function () {
+            btnStartGame.hide();
+            that.start();
+        });
+        this.booted = true;
     }
 };
 
 Game.prototype.stop = function () {
-    this.running = false;
     clearInterval(this._interValId);
+    clearInterval(this._roundTimer);
+    this.checkState();
+};
+
+Game.prototype.checkState = function () {
+    switch (this.gameState) {
+        case 0:
+            this.init();
+            return;
+        case 1:
+            this.start();
+            return;
+        case 2:
+            this.gameOver();
+            return;
+    }
+};
+
+Game.prototype.gameOver = function () {
+    $('#game_over').show();
+    $('#btn_main_menu');
+
+    var that = this;
+    $('#btn_main_menu').click( function () {
+        that.gameState = 0;
+        $(this).hide();
+        that.checkState();
+    });
 };
 
 Game.prototype.collide = function(axes, direction, speed, object) {

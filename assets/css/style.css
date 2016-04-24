@@ -54,3 +54,22 @@ canvas#c {
     /*font-size: 20px;*/
     /*padding: 30px;*/
 /*}*/
+
+#game_over {
+    display: none;
+}
+
+#btn_main_menu {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+    z-index:1;
+    padding:20px 50px;
+    color: #EFEFEF;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: #2980b9;
+    border:none;
+}

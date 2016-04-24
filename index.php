@@ -17,7 +17,7 @@
         canvas = new Canvas();
         canvas.set();
         var game = new Game();
-        game.start();
+        game.init();
         window.onresize = function (event) {
             canvas = new Canvas();
             canvas.set();
@@ -28,8 +28,10 @@
 </head>
 <body>
     <canvas id="c" height="10"></canvas>
-<!--    <div class="menu">-->
-<!--        <button id="start_game">Start Game</button>-->
-<!--    </div>-->
+    <button id="start_game">Start Game</button>
+    <div id="game_over">
+        <h1>GAME OVER</h1>
+        <button id="btn_main_menu">Main menu</button>
+    </div>
 </body>
 </html>
