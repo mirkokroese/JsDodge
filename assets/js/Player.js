@@ -1,6 +1,7 @@
 'use strict';
 var Player = function (gameObject) {
     this.health = 100;
+    this.boost = 100;
     this.width = 100;
     this.height = 100;
     this.x = (document.body.clientWidth / 2) - this.width;

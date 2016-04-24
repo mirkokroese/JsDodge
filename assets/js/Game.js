@@ -36,6 +36,11 @@ Game.prototype.draw = function() {
         this.ctx.fillText("HEALTH", 350, 55.5);
         // Level text
         this.ctx.fillText("LEVEL: " + this.level, this.canvas.getWidth() - 160, 55.5);
+        // Boost background
+        this.ctx.fillStyle = "#34495e";
+        this.ctx.fillRect(30,70,300,20);
+        this.ctx.fillStyle = "#2980b9";
+        this.ctx.fillRect(30,70,(300 / 100) * this.player.boost,20)
     }
 };
 
@@ -82,9 +87,20 @@ Game.prototype.update = function() {
     }
 
     if(this.controller.boostPressed()) {
-        this.moveSpeed = 8;
+        if(this.player.boost > 0) {
+            this.moveSpeed = 8;
+            this.player.boost--;
+            if(this.player.boost < 0) {
+                this.player.boost = 0;
+            }
+        } else {
+            this.moveSpeed = 4.3;
+        }
     } else {
         this.moveSpeed = 4.3;
+        if(this.player.boost < 100) {
+            this.player.boost += 0.2;
+        }
     }
 
     for (var x = 0; x < this.enemies.length; x++) {
